@@ -204,7 +204,7 @@ loss = 0
 bosshealth = 100
 
 # open the beggining story and print it
-Backstory = open("beggining.txt", "r")
+Backstory = open("beginning.txt", "r")
 Bstory = Backstory.read()
 print Bstory
 Backstory.close()
