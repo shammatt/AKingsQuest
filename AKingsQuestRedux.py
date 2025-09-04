@@ -185,16 +185,13 @@ class Game:
 
         return option
 
-    def find_sword(self):
-        # Small guessing game
-        correct_direction = random.choice(['north', 'east', 'west'])
-        while self.player.movement() != correct_direction:
-                print("You did not find your weapon. Keep searching in another direction.")
-        
-        self.print_story('bedroom_search')
-
     def found_shield(self):
         self.player.shield = True
+
+    def guessing_game(self, objective):
+        correct_direction = random.choice(['north', 'east', 'west'])
+        while self.player.movement() != correct_direction:
+                print("You did not find the {objective}. Keep searching in another direction.")
 
     def loss():
         print("Your health fell to 0. Your kindom has been taken over by the enemy.")
@@ -213,6 +210,7 @@ class Game:
         rannumber = random.randrange(10) + 1
         tries = 3
 
+        print("You have found a side quest, here is a chance to win 2 health potions.")
         print("Guess a number 1-10")
         while tries > 0:
             try:
@@ -236,6 +234,9 @@ class Game:
 
         print_single_line("You ran out of tries. No health potions for you.")
 
+    def upgrade_sword(self, sword):
+        self.player.sword = sword
+
 
 def main():
     # Open the story and store in var
@@ -243,10 +244,10 @@ def main():
         with open('story.json', 'r') as file:
             text_data = json.load(file)
     except FileNotFoundError:
-        print(f"Error: The file was not found.")
+        print("Error: The file was not found.")
         return
     except json.JSONDecodeError:
-        print(f"Error: The file  is not a valid JSON file.")
+        print("Error: The file  is not a valid JSON file.")
         return
 
     # Set up Game instance
@@ -256,18 +257,17 @@ def main():
     game.print_story('intro_sequence')
 
     # Get sword and get out of the room 
-    game.find_sword()
+    game.guessing_game('weapon')
+    game.print_story('bedroom_search')
+    text = text_data['level_one']
 
-    text = ["You are going to have to fight for you life, hopefully the sword will do some damage!",
-            "You walk down the corridor.",
-            "You continue down the corridor and encounter another enemy."]
-
-    # Fight 3 enemies at level 0; 30 HP
+    # Fight 3 enemies at level 0
     for i in range(4):
         if i < 3:
             print(text[i])
         elif i == 3:
-            print_single_line("You find the end of the corridor and climb down the stairs.")
+            # We want a break between the floors, so we use print_single_line
+            print_single_line(text[i])
             game.print_story('level_two_start')
 
         game.battle()
@@ -275,100 +275,48 @@ def main():
 
     # Shield found, enemies have more health
     game.found_shield()
+
+    # Increase dificulty
     game.set_level(1)
+    text = text_data['level_two']
 
-    text = ["You take his shield. However one of the more heavily armed vanguards spots you and is rushing towards you.",
-            "Only one more floor to go then i'll be in the basement. Just have to take out this last guy."]
-
+    # Fight 2 enemies at level 1
     for i in range(2):
+        # Side quest after the first enemy
         if i == 1:
             game.side_quest()
 
+        print(text[i])
+        game.battle()
+        game.continuation()
+
+    print_single_line("You climb down the stairs.")
+    game.print_story('level_three_start')
+
+    # New sword
+    game.upgrade_sword('sharp')
+
+    # Increase dificulty
+    game.set_level(2)
+    text = text_data['level_three']
+
+    # Fight 2 enemies at level 2
+    for i in range(2):
         print(text[i])
 
         game.battle()
         game.continuation()
 
-
-
+    game.print_story('basement')
+    game.guessing_game('button')
+    game.upgrade_sword('z')
+    game.set_level(3)
+    game.print_story('boss')
+    game.battle()
 
     print("You win! You have recovered your castle. But the war is not over, you must continue forward and recover your kingdom.")
     input("Thank you for playing! Press the enter key to exit.")
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
-
-
-"""
-while health > 0:
-    continuation()
-    print("You find the end of the corridor and climb down the stairs."
-    input("Press the enter key to continue.")
-    print("You climb down the stairs, but the knights you see are better armed than the others you faught. "\
-          "You see one that is not as well armed, you better kill him and steal his shield if you want to have a chance to defeat the others."
-    input("Press the enter key to continue.")
-    print("You charge towards the weak knight."
-    ehealthL1()
-    battle()
-    break
-while health > 0:
-    continuation()
-    inventory.append("shield")
-    print("You take his shield.", inventory, "But one of the more heavily armed vanguards spots you and is rushing towards you."
-    ehealthL2()
-    battle()
-    break
-while health > 0:
-    continuation()
-    print("You have found a side quest, here is a chance to win 2 health potions."
-    sidequest()
-    input("Press the enter key to continue.")
-    print("Only one more floor to go then i'll be in the basement. Just have to take out this last guy."
-    ehealthL2()
-    battle()
-    break
-while health > 0:
-    continuation()
-    print("You catch a glimpse of a shiny metal.\nYou look down and shuffle the dirt around the metal. " \
-        "You find a sharpened sword that was once weilded by Arthur, your best knight. " \
-        "You take it, knowing that it will come to good use.\n "
-    inventory[1] = "sharp sword"
-    print(inventory
-    print("You climb down the stairs."
-    input("Press the enter key to continue.")
-    break
-while health > 0:
-    print("Another enemy, time to put this sword to good use."
-    ehealthL3()
-    battle()
-    break
-while health > 0:
-    continuation()
-    print("One last vangaurd to take out and then i'll be able to get the 'Z sword'."
-    ehealthL3()
-    battle()
-    break
-while health > 0:
-    continuation()
-    print("You climb down into the basement. It's very dark down here. You must find a button that will raise the 'Z sword' out of the chamber. "\
-          "Enter a direction in which you would like to search."
-    button = movement()
-    while button != "west":
-        if button == "north":
-            print("You search the wall but come up short. Keep searching in another direction."
-        elif compass == "east":
-            print("You search the wall but don't find anything. Keep searching in another direction."
-        else:
-            print("Invalid answer."
-        button = movement()
-    inventory[1] = ("Z sword")
-    input("Press the enter key to activate the button.")
-    print("You found the button. You hear a loud crash and gears begin to turn. The 'Z sword' begins to raise out of the center of the room. "\
-          "A spotlight is shining on it. As you go to grab the sword, you hear an explosion. Vegeta, the enemy king, comes crawling through the hole in the wall. "\
-          "You grab the sword", inventory, "and begin to rush to Vegeta. He is heavily armored. If you defeat him you'll have your castle back. "\
-          "If you don't... well you dont want to find out."
-    input("Press the enter key to continue.")
-    bossbattle()
-    break
-"""
