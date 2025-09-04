@@ -1,0 +1,18 @@
+{
+  "intro_sequence": [
+    "You wake up to realize you are being attacked.",
+    "You hear pounding at your door and you then realize that you have been ambushed and must fight to recover your castle.",
+    "But you cannot defeat the enemy without your family's legendary weapon.",
+    "You get out of bed.",
+    "You must fight but you do not have a weapon.",
+    "You must look throughout your room to find a sword to fight with."
+  ],
+  "bedroom_search": [
+    "You found a sword! It's a little dull but it will do.",
+    "You walk to the door right as a knight breaks through."
+  ],
+  "level_two_start": [
+    "You notice the knights here are better armed than the others you faught.",
+    "You see one that is not as well armed, you better kill him and steal his shield if you want to have a chance to defeat the others."
+  ]
+}
