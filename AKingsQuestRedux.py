@@ -22,7 +22,7 @@ class Player:
 
     def add_potions(self, potions=1):
         self.health_potions += potions
-        print("You now have {self.health_potions} health potion(s)")
+        print(f"You now have {self.health_potions} health potion(s).")
 
     def attack(self):
         """Deal 10 damage with dull sword 50% of the time, and miss or 5 damage the other 50%
@@ -60,10 +60,10 @@ class Player:
 
     def heal(self):
         self.health += 40
-        print("Your health is now:", self.health)
+        print(f"Your health is now: {self.health}")
 
         self.health_potions -= 1
-        print("You now have ", self.health_potions, " health potion(s) remaining.")
+        print(f"You now have {self.health_potions} health potion(s) remaining.")
 
     def get_potions_available(self):
         return self.health_potions > 0
@@ -71,10 +71,10 @@ class Player:
     def movement(self):
         valid_options = {'north', 'east', 'west'}
 
-        direction = input("Which direction would you like to search? {valid_options}").lower()
+        direction = input(f"Which direction would you like to search? {valid_options} ").lower()
         while direction not in valid_options:
             print("Incorrect Move. Please try again.")
-            direction = input("Which direction would you like to search? {valid_options}").lower()
+            direction = input(f"Which direction would you like to search? {valid_options} ").lower()
 
         return direction
 
@@ -121,7 +121,7 @@ class Game:
         print("You have entered a battle.")
 
         self.enemy.reset(self.level)
-        while self.player.health >= 0 and self.enemy.health >= 0:
+        while self.player.health > 0 and self.enemy.health > 0:
             player_option = self.battle_phase_option()
             
             # Options are a and p, p only available if player has a potion
@@ -131,19 +131,19 @@ class Game:
                 self.enemy.damage(self.player.attack())
 
             self.player.damage(self.enemy.attack())
-            print("Your health is: {self.player.health}, The enemies health is: {self.enemy.health}")
+            print(f"Your health is: {self.player.health}, The enemies health is: {self.enemy.health}")
 
-        if self.player.health < 0:
-            Game.loss()
+        if self.player.health <= 0:
+            self.loss()
 
     def battle_phase_option(self):
         """Move options during battle phase"""
         # Ensure player has a health potion
-        if self.player.get_health_potions():
-            text = "What would you like to do? (a for attack or p for drink health potion)"
+        if self.player.get_potions_available():
+            text = "What would you like to do? (a for attack or p for drink health potion) "
             valid_options = {'a', 'p'}
         else:
-            text = "What would you like to do? (a for attack)"
+            text = "What would you like to do? (a for attack) "
             valid_options = {'a'}
 
         option = input(text)
@@ -161,7 +161,10 @@ class Game:
                 self.player.heal()
             elif option == 'l':
                 if self.enemy.drop_potion():
+                    print("You found a potion!")
                     self.player.add_potions()
+                else:
+                    print("You searched the body and did not find anything of value.")
 
 
     def continuation_options(self):
@@ -169,14 +172,14 @@ class Game:
         valid_options = {'c'}
         text = "What would you like to do? (c for continue"
         # Ensure player has a health potion
-        if self.player.get_health_potions():
+        if self.player.get_potions_available():
             text += ", p for drink health potion"
             valid_options.add('p')
-        elif not self.enemy.looted:
+        if not self.enemy.looted:
             text += ", l for loot"
             valid_options.add('l')
 
-        text += ')'
+        text += ") "
 
         option = input(text).lower()
         while option not in valid_options:
@@ -191,9 +194,9 @@ class Game:
     def guessing_game(self, objective):
         correct_direction = random.choice(['north', 'east', 'west'])
         while self.player.movement() != correct_direction:
-                print("You did not find the {objective}. Keep searching in another direction.")
+                print(f"You did not find the {objective}. Keep searching in another direction. ")
 
-    def loss():
+    def loss(self):
         print("Your health fell to 0. Your kindom has been taken over by the enemy.")
         input("Thank you for playing! Press the enter key to exit.")
         sys.exit(1)
@@ -230,7 +233,7 @@ class Game:
                 print("Higher...")
 
             tries -= 1
-            print("Tries left:", tries)
+            print(f"Tries left: {tries}")
 
         print_single_line("You ran out of tries. No health potions for you.")
 
