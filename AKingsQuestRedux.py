@@ -171,6 +171,8 @@ class Game:
                 else:
                     print("You searched the body and did not find anything of value.")
 
+        print("\n")
+
 
     def continuation_options(self):
         """Move options after battle phase"""
@@ -193,6 +195,16 @@ class Game:
 
         return option
 
+    def enemy_generator(self, num_enemies, text_key=None):
+        """If we want to display text, each enemy should have an associated string"""
+        text = self.story[text_key] if text_key else None
+        for i in range(num_enemies):
+            if text:
+                print(text[i])
+
+            self.battle()
+            self.continuation()
+
     def found_shield(self):
         self.player.shield = True
 
@@ -206,10 +218,9 @@ class Game:
         input("Thank you for playing! Press the enter key to exit.")
         sys.exit(1)
 
-    def print_story(self, key):
-        for line in self.story[key]:
+    def print_story(self, text_key):
+        for line in self.story[text_key]:
             print(line)
-        #input("Press the enter key to continue.")
 
     def set_level(self, level):
         self.level = level
@@ -267,62 +278,46 @@ def main():
     # Get sword and get out of the room 
     game.guessing_game('weapon')
     game.print_story('bedroom_search')
-    text = text_data['level_one']
 
     # Fight 3 enemies at level 0
-    for i in range(4):
-        if i < 3:
-            print(text[i])
-        elif i == 3:
-            # We want a break between the floors, so we use print_single_line
-            print_single_line(text[i])
-            game.print_story('level_two_start')
+    game.enemy_generator(3, 'level_one')
 
-        game.battle()
-        game.continuation()
+    # Climb down to the next level
+    game.print_story('level_two_start')
+    game.enemy_generator(1)
 
     # Shield found, enemies have more health
     game.found_shield()
 
     # Increase dificulty
     game.set_level(1)
-    text = text_data['level_two']
 
     # Fight 2 enemies at level 1
-    for i in range(2):
-        # Side quest after the first enemy
-        if i == 1:
-            game.side_quest()
+    game.enemy_generator(2, 'level_two')
 
-        print(text[i])
-        game.battle()
-        game.continuation()
+    # Side quest for extra potions
+    game.side_quest()
 
-    print_single_line("You climb down the stairs.")
     game.print_story('level_three_start')
 
     # New sword
     game.upgrade_sword('sharp')
 
-    # Increase dificulty
+    # Fight 2 enemies at level 2 Enemy health
     game.set_level(2)
-    text = text_data['level_three']
+    game.enemy_generator(2, 'level_three')
 
-    # Fight 2 enemies at level 2
-    for i in range(2):
-        print(text[i])
-
-        game.battle()
-        game.continuation()
-
+    # Basement sequence
     game.print_story('basement')
     game.guessing_game('button')
     game.upgrade_sword('z')
+
+    # Boss sequence
     game.set_level(3)
     game.print_story('boss')
     game.battle()
 
-    print("You win! You have recovered your castle. But the war is not over, you must continue forward and recover your kingdom.")
+    print("!!!You win!!!\nYou have recovered your castle. But the war is not over, you must continue forward and recover your kingdom.")
     input("Thank you for playing! Press the enter key to exit.")
 
 
