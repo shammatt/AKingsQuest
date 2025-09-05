@@ -15,7 +15,7 @@ def print_single_line(text):
 
 class Player:
     def __init__(self):
-        self.health = 100
+        self.health = 150
         self.health_potions = 1
         self.sword = 'dull'
         self.shield = False
@@ -35,9 +35,10 @@ class Player:
         chance = random.random()
         if self.sword == 'sharp':
             return 10 if chance >= 0.5 else 5
-        elif 0 <= chance <= 0.25:
+        elif 0 <= chance <= 0.2:
+            print("You missed your attack.")
             return 0
-        elif 0.5 < chance <= 0.75:
+        elif 0.2 < chance <= 0.4:
             return 5
         else:
             return 10 
@@ -99,7 +100,7 @@ class Enemy:
     def drop_potion(self):
         if not self.looted:
             self.looted = True
-            return random.random() >= 0.67
+            return random.random() >= 0.6
 
         return False
 
@@ -122,6 +123,7 @@ class Game:
 
         self.enemy.reset(self.level)
         while self.player.health > 0 and self.enemy.health > 0:
+            print(f"Your health is: {self.player.health}, The enemies health is: {self.enemy.health}")
             player_option = self.battle_phase_option()
             
             # Options are a and p, p only available if player has a potion
@@ -130,11 +132,14 @@ class Game:
             elif player_option == "a":
                 self.enemy.damage(self.player.attack())
 
-            self.player.damage(self.enemy.attack())
-            print(f"Your health is: {self.player.health}, The enemies health is: {self.enemy.health}")
+            # If enemy is defeated, then you do not take damage
+            if self.enemy.health > 0:
+                self.player.damage(self.enemy.attack())
 
         if self.player.health <= 0:
             self.loss()
+
+        print(f"You defeated the enemy. Your health is: {self.player.health}")
 
     def battle_phase_option(self):
         """Move options during battle phase"""
@@ -204,7 +209,7 @@ class Game:
     def print_story(self, key):
         for line in self.story[key]:
             print(line)
-        input("Press the enter key to continue.")
+        #input("Press the enter key to continue.")
 
     def set_level(self, level):
         self.level = level
@@ -213,7 +218,7 @@ class Game:
         rannumber = random.randrange(10) + 1
         tries = 3
 
-        print("You have found a side quest, here is a chance to win 2 health potions.")
+        print("\nYou have found a side quest, here is a chance to win 2 health potions.")
         print("Guess a number 1-10")
         while tries > 0:
             try:
