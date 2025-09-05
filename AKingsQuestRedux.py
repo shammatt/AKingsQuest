@@ -171,8 +171,7 @@ class Game:
                 else:
                     print("You searched the body and did not find anything of value.")
 
-        print("\n")
-
+        print()
 
     def continuation_options(self):
         """Move options after battle phase"""
@@ -212,6 +211,7 @@ class Game:
         correct_direction = random.choice(['north', 'east', 'west'])
         while self.player.movement() != correct_direction:
                 print(f"You did not find the {objective}. Keep searching in another direction. ")
+        print()
 
     def loss(self):
         print("Your health fell to 0. Your kindom has been taken over by the enemy.")
@@ -229,7 +229,7 @@ class Game:
         rannumber = random.randrange(10) + 1
         tries = 3
 
-        print("\nYou have found a side quest, here is a chance to win 2 health potions.")
+        print("You have found a side quest, here is a chance to win 2 health potions.")
         print("Guess a number 1-10")
         while tries > 0:
             try:
@@ -240,8 +240,8 @@ class Game:
                 continue
 
             if guess == rannumber:
-                self.player.add_potions(2)
                 print_single_line("You guessed it!")
+                self.player.add_potions(2)
                 return
             elif guess > rannumber:
                 print("Lower...")
@@ -249,7 +249,7 @@ class Game:
                 print("Higher...")
 
             tries -= 1
-            print(f"Tries left: {tries}")
+            print(f"Tries left: {tries}, correct number: {guess}")
 
         print_single_line("You ran out of tries. No health potions for you.")
 
@@ -317,7 +317,7 @@ def main():
     game.print_story('boss')
     game.battle()
 
-    print("!!!You win!!!\nYou have recovered your castle. But the war is not over, you must continue forward and recover your kingdom.")
+    print("\n!!!You win!!!\nYou have recovered your castle. But the war is not over, you must continue forward and recover your kingdom.")
     input("Thank you for playing! Press the enter key to exit.")
 
 
