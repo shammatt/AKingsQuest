@@ -1,0 +1,47 @@
+{
+  "intro_sequence": [
+    "You wake up to pounding at your door.",
+    "You jump out of bed and check your window. You see an enemy army past your gate.",
+    "Realizing you have been ambushed, you must fight to recover your castle.",
+    "You know you cannot defeat the enemy without your family's legendary weapon but for now anything will do.",
+    "You must look throughout your room to find a sword to fight with."
+  ],
+  "bedroom_search": [
+    "You found the sword! It's a little dull but it will do.",
+    "You proceed to the door. As you go to open it, a knight breaks through."
+  ],
+  "level_one": [
+    "You are going to have to fight for you life, hopefully the sword will do some damage!",
+    "As you walk down the corridor, another enemy appears.",
+    "You continue down the corridor and encounter another enemy."
+  ],
+  "level_two_start": [
+    "You find the end of the corridor and climb down the stairs.",
+    "You notice the knights here are better armed than the others you faught.",
+    "You see one that is not as well armed, you better kill him and steal his shield if you want to have a chance to defeat the others."
+  ],
+  "level_two": [
+    "You take his shield. However one of the more heavily armed vanguards spots you and is rushing towards you.",
+    "Only one more floor to go then you'll be in the basement. Just have to take out this last guy."
+  ],
+  "level_three_start": [
+    "\nYou catch a glimpse of a shiny metal.",
+    "You look down and shuffle the dirt around the metal.",
+    "You find a sharpened sword that was once weilded by Arthur, your best knight.",
+    "You take it, knowing that it will come to good use."
+  ],
+  "level_three": [
+    "\nAnother enemy, time to test out this sword.",
+    "One last vangaurd to take out and then you'll be able to get the 'Z sword'."
+  ],
+  "basement": [
+    "You climb down into the basement. It's very dark down there.",
+    "You must find a button that will raise the 'Z sword' out of the chamber."
+  ],
+  "boss": [
+    "You found the button. You hear a loud crash and gears begin to turn. The 'Z sword' begins to raise out of the center of the room.",
+    "A spotlight is shining on it. As you go to grab the sword, you hear an explosion. Vegeta, the enemy king, comes crawling through the hole in the wall.",
+    "You grab the sword and begin to rush to Vegeta. He is heavily armored. If you defeat him, you'll have your castle back.",
+    "If you don't... well you dont want to find out."
+  ]
+}
